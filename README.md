@@ -8,8 +8,12 @@ Install ttkthemes:
 ```bash
 python3 -m pip install git+https://github.com/RedFantom/ttkthemes
 ```
+Install earthpy:
+```bash
+pip3 install earthpy
+```
 
-Run using
+Run using:
 ```bash
 python3 interface.py
 ```
