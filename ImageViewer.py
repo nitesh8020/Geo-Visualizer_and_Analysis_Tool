@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from PIL import Image
 import matplotlib
+import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
@@ -23,17 +24,21 @@ class ViewImage(ttk.Frame):
         imgb = Image.open(self.file3)
 
         # Code to preview image comes here.
-        red_img = np.array(imgr)
-        red_array = red_img
-        # green_array = np.array(imgg)
-        # blue_array = np.array(imgb)
+        red_array = np.array(imgr)
+        green_array = np.array(imgg)
+        blue_array = np.array(imgb)
 
-        # for i in range(len(red_array)):
-        #     for j in range(len(red_array[i])):
-        #         red_array[i][j][1] = green_array[i][j][1]
-        #         red_array[i][j][2] = blue_array[i][j][2]
-        
-        img_full = Image.fromarray(red_array)
+        l,b = red_array.shape
+        c = 3
+        img_full = np.zeros((l,b,c))
+        for i in range(l):
+            for j in range(b):
+                img_full[i][j][0] = red_array[i][j]
+                img_full[i][j][1] = green_array[i][j]
+                img_full[i][j][2] = blue_array[i][j]
+
+
+        img_full = Image.fromarray(img_full.astype('uint8'), 'RGB')
         self.figure = Figure(figsize = (10,6), dpi = 100)
         self.plot = self.figure.add_subplot(1,1,1)
         self.plot.imshow(img_full)
