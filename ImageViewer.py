@@ -1,8 +1,13 @@
 import tkinter as tk
 from tkinter import ttk
-from PIL import Image
+from glob import glob
+import rasterio as rio
+from rasterio.plot import plotting_extent
+import geopandas as gdp
+import earthpy as et
+import earthpy.spatial as es
+import earthpy.plot as ep
 import matplotlib
-import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
@@ -19,29 +24,11 @@ class ViewImage(ttk.Frame):
 
 
     def showImage(self,frame):
-        imgr = Image.open(self.file1)
-        imgg = Image.open(self.file2)
-        imgb = Image.open(self.file3)
-
-        # Code to preview image comes here.
-        red_array = np.array(imgr)
-        green_array = np.array(imgg)
-        blue_array = np.array(imgb)
-
-        l,b = red_array.shape
-        c = 3
-        img_full = np.zeros((l,b,c))
-        for i in range(l):
-            for j in range(b):
-                img_full[i][j][0] = red_array[i][j]
-                img_full[i][j][1] = green_array[i][j]
-                img_full[i][j][2] = blue_array[i][j]
-
-
-        img_full = Image.fromarray(img_full.astype('uint8'), 'RGB')
+        self.band_fnames = [self.file1,self.file2,self.file3]
+        arr_st, meta = es.stack(self.band_fnames)
         self.figure = Figure(figsize = (10,6), dpi = 100)
         self.plot = self.figure.add_subplot(1,1,1)
-        self.plot.imshow(img_full)
+        ep.plot_rgb(arr_st,ax = self.plot)
         self.canvas = FigureCanvasTkAgg(self.figure,frame)
         self.toolbar = NavigationToolbar2Tk(self.canvas,frame)
         self.toolbar.update()

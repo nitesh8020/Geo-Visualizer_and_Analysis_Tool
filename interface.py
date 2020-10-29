@@ -1,8 +1,15 @@
 from tkinter import ttk
 from ttkthemes import ThemedStyle
+from glob import glob
 import tkinter as tk
+import rasterio as rio
+from rasterio.plot import plotting_extent
+import geopandas as gdp
+import earthpy as et
+import earthpy.spatial as es
+import earthpy.plot as ep
+from earthpy.io import path_to_example
 from tkinter import filedialog
-from PIL import Image
 import matplotlib
 import numpy as np
 from ImageViewer import ViewImage
