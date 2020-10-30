@@ -25,10 +25,10 @@ class ViewImage(ttk.Frame):
 
     def showImage(self,frame):
         self.band_fnames = [self.file1,self.file2,self.file3]
-        arr_st, meta = es.stack(self.band_fnames)
+        arr_st, meta = es.stack(self.band_fnames, nodata = -9999)
         self.figure = Figure(figsize = (10,6), dpi = 100)
         self.plot = self.figure.add_subplot(1,1,1)
-        ep.plot_rgb(arr_st,ax = self.plot)
+        ep.plot_rgb((arr_st), stretch=True, str_clip = 0.5 , ax = self.plot)
         self.canvas = FigureCanvasTkAgg(self.figure,frame)
         self.toolbar = NavigationToolbar2Tk(self.canvas,frame)
         self.toolbar.update()
