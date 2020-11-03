@@ -15,15 +15,22 @@ class Process(ttk.Frame):
         self.master = master
         self.files=[]
         self.btns=[]
+        self.display=ttk.Frame(self)
         self.createWidgets()
 
 
     def create(self):
+        if self.display.winfo_exists():
+            self.display.grid_forget()
+            self.display.destroy()
+            
+        self.display = ttk.Frame(self)
+        self.display.grid(row = 0, column = 1,rowspan=2, sticky = 'nwes')
         frame=self.display
         ff=[]
         for ffile in self.files:
         	ff.append(rasterio.open(ffile))
-        mos, out = merge(ff)
+        mos, out = merge(ff, method = self.dropdown.get())
         self.figure = Figure(figsize = (10,6), dpi = 100)
         self.plot = self.figure.add_subplot(1,1,1)
         show(mos, cmap='terrain' , ax = self.plot)
@@ -39,9 +46,7 @@ class Process(ttk.Frame):
         self.grid_rowconfigure(0,weight = 0)
         self.grid_rowconfigure(1,weight = 1)
         
-        self.display = ttk.Frame(self)
-        self.display.grid(row = 0, column = 1,rowspan=2, sticky = 'nwes')
-
+        
         
         self.panel = ttk.Frame(self)
         self.panel.grid(row=1, column=0, sticky='nsew')
@@ -53,9 +58,15 @@ class Process(ttk.Frame):
         self.btn = ttk.Button(self.panel, text='Choose scene...', command=self.choose)
         self.btn.grid(row=1, column=0, sticky='nsew', padx=10, pady=10) 
         
-        self.createbtn = tk.Button(self.panel, text='CREATE MOSAIC',bg='green', fg='white', command=self.create, state='disabled')
-        self.createbtn.grid(row=2, column=0, sticky='nsew', padx=10, pady=10)
+        self.createbtn = tk.Button(self, text='CREATE MOSAIC',bg='green', fg='white', command=self.create, state='disabled')
+        self.createbtn.grid(row=4, column=0, sticky='nsew', padx=10, pady=10)
         
+        self.lbl = ttk.Label(self.panel, text="Choose Mosaic Options", font="Arial 10")
+        self.lbl.grid(row=2, column=0,sticky='wens', padx=10, pady=2)
+        
+        self.dropdown = ttk.Combobox(self.panel, values=['first','last','min', 'max'], state='readonly')
+        self.dropdown.grid(row=3, column=0, sticky='nsew', padx=10, pady=10)
+        self.dropdown.current(0)
 
 
     def choose(self, event=None):			# event handler for choose file
@@ -63,20 +74,11 @@ class Process(ttk.Frame):
         if(ffile!=() and ffile!=''):
             ind= ffile.rfind('/')
             btn = ttk.Button(self.panel, text = ffile[ind+1:])
-            btn.grid(row=len(self.btns)+3,column=0, sticky='nsew', padx=10, pady=10 )
+            btn.grid(row=len(self.btns)+4,column=0, sticky='nsew', padx=10, pady=10 )
             self.btns.append(btn)
             self.files.append(ffile)
             if(len(self.files)>=1):
                 self.createbtn['state']='normal'
-           
-        
-
-
-
-        
-
-
-
-
+            
         
 
