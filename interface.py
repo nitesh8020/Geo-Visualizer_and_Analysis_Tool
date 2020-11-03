@@ -13,6 +13,7 @@ from tkinter import filedialog
 import matplotlib
 import numpy as np
 from ImageViewer import ViewImage
+from Process import Process
 
 
 class RootFrame(ttk.Frame):
@@ -71,7 +72,7 @@ class RootFrame(ttk.Frame):
             self.window.grid_forget()
             self.window.destroy()
         self.header['text'] = 'Process'
-        self.window = ttk.Frame(self)
+        self.window = Process(self)
         self.window.grid(row=1, column=0, columnspan=4, sticky='nsew')
       
 		
