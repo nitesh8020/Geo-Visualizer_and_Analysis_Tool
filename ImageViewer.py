@@ -9,21 +9,22 @@ import earthpy.spatial as es
 import earthpy.plot as ep
 import matplotlib
 import numpy as np
+from tkinter import filedialog
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 
 class ViewImage(ttk.Frame):
-    def __init__(self,master,file1,file2,file3):
+    def __init__(self,master):
         super().__init__(master)
         self.master = master
-        self.file1 = file1
-        self.file2 = file2
-        self.file3 = file3
-        self.grid(row = 1, column = 1, columnspan = 2, sticky = 'nsew',padx = 5, pady = 5)
+        self.file1 =''
+        self.file2 =''
+        self.file3 =''
         self.createWidgets()
 
 
-    def showImage(self,frame):
+    def showImage(self):
+        frame=self.frame
         self.band_fnames = [self.file1,self.file2,self.file3]
         arr_st, meta = es.stack(self.band_fnames, nodata = -9999)
         self.figure = Figure(figsize = (10,6), dpi = 100)
@@ -35,8 +36,62 @@ class ViewImage(ttk.Frame):
         self.canvas.get_tk_widget().pack()
 
     def createWidgets(self):
-        self.grid_columnconfigure(0,weight = 1)
+        self.grid_columnconfigure(0,weight = 0)
+        self.grid_columnconfigure(1,weight = 1)
+        
         self.grid_rowconfigure(0,weight = 1)
-        self.frame = ttk.Frame(self)
-        self.showImage(self.frame)
-        self.frame.grid(row = 0, column = 0, sticky = 'nwes')
+        self.grid_rowconfigure(1,weight = 0)
+        
+        self.frame = tk.Frame(self)
+        self.frame.grid(row = 0, column = 1, sticky = 'nwes')
+
+        
+        self.chooseButtons = ttk.Frame(self)
+        self.chooseButtons.grid(row = 1, column = 0, padx = 5, pady = 5)
+
+        self.choose_button1 = ttk.Button(self.chooseButtons, text="Red File", command = self.ChooseFileAction1)
+        self.choose_button1.grid(row=1, column=0, padx=5, pady=5)
+
+        self.choose_button2 = ttk.Button(self.chooseButtons, text="Green File", command = self.ChooseFileAction2)
+        self.choose_button2.grid(row=1, column=1, padx=5, pady=5)
+
+        self.choose_button3 = ttk.Button(self.chooseButtons, text="Blue File", command = self.ChooseFileAction3)
+        self.choose_button3.grid(row=1, column=2, padx=5, pady=5)
+        
+        
+        
+
+        
+
+        self.show_image = ttk.Button(self, text="Show Image", command = self.showImage)
+        self.show_image.grid(row=1, column=1, pady=10,padx=10, sticky='e')
+        
+        
+        
+        
+
+
+    def ChooseFileAction1(self, event=None):			# event handler for choose file
+        self.file1 = filedialog.askopenfilename()
+        if(self.file1!=() and self.file1!=''):
+            ind= self.file1.rfind('/')
+            self.choose_button1["text"]='Red: '+self.file1[ind+1:]
+        else: self.file1=''
+
+
+    def ChooseFileAction2(self, event=None):			# event handler for choose file
+        self.file2 = filedialog.askopenfilename()
+        if(self.file2!=() and self.file2!=''):
+            ind= self.file2.rfind('/')
+            self.choose_button2["text"]='Green: '+self.file2[ind+1:]
+        else: self.file2=''
+
+    def ChooseFileAction3(self, event=None):			# event handler for choose file
+        self.file3 = filedialog.askopenfilename()
+        if(self.file3!=() and self.file3!=''):
+            ind= self.file3.rfind('/')
+            self.choose_button3["text"]='Blue: '+self.file3[ind+1:]
+        else: self.file3=''
+
+        
+
