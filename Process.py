@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 import rasterio
+import earthpy.plot as ep
 from rasterio.merge import merge
 from rasterio.plot import show
 import matplotlib
@@ -33,7 +34,8 @@ class Process(ttk.Frame):
         mos, out = merge(ff, method = self.dropdown.get())
         self.figure = Figure(figsize = (10,6), dpi = 100)
         self.plot = self.figure.add_subplot(1,1,1)
-        show(mos, cmap='terrain' , ax = self.plot)
+        # show(mos, cmap='terrain' , ax = self.plot)
+        ep.plot_rgb((mos), stretch=True, str_clip = 0.5 , ax = self.plot)
         self.canvas = FigureCanvasTkAgg(self.figure,frame)
         self.toolbar = NavigationToolbar2Tk(self.canvas,frame)
         self.toolbar.update()

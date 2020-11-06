@@ -12,6 +12,8 @@ import numpy as np
 from tkinter import filedialog
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
+import os
+from datetime import datetime
 
 class ViewImage(ttk.Frame):
     def __init__(self,master):
@@ -24,9 +26,13 @@ class ViewImage(ttk.Frame):
 
 
     def showImage(self):
+        directory = os.getcwd()
+        now = datetime.now()
+        dt_string = now.strftime("%d_%m_%Y_%H:%M:%S")
+        outdir = directory + '/img_STACK' + dt_string + '.tiff'
         frame=self.frame
         self.band_fnames = [self.file1,self.file2,self.file3]
-        arr_st, meta = es.stack(self.band_fnames, nodata = -9999)
+        arr_st, meta = es.stack(self.band_fnames, out_path = outdir, nodata = 0)
         self.figure = Figure(figsize = (10,6), dpi = 100)
         self.plot = self.figure.add_subplot(1,1,1)
         ep.plot_rgb((arr_st), stretch=True, str_clip = 0.5 , ax = self.plot)
