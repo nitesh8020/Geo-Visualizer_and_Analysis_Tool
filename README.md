@@ -1,4 +1,4 @@
-# GPS-Data-Analysis
+# Geo-Visualizer_and_Analysis_Tool
 Install tkinter:
 ```bash
 sudo apt-get install python3-tk
