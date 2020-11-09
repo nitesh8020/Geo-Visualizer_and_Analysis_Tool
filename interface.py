@@ -23,7 +23,7 @@ class RootFrame(ttk.Frame):
     def __init__(self, master):
         super().__init__(master)
         self.master = master
-        master.title("GPS Data Analysis")        # title bar
+        master.title("Geo-Visualizer And Analysis Tool")        # title bar
         self.file1=''               # contains the contents of the data file
         self.file2=''
         self.file3=''
