@@ -12,6 +12,14 @@ Install earthpy:
 ```bash
 pip3 install earthpy
 ```
+Install cartopy:
+```bash
+pip3 install cartopy
+```
+Install descartes:
+```bash
+pip3 install descartes
+```
 
 Run using:
 ```bash
