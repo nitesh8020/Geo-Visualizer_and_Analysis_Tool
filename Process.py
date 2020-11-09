@@ -9,7 +9,6 @@ import numpy as np
 from tkinter import filedialog
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
-#from clipmosaic.py import clipping
 
 class Process(ttk.Frame):
     def __init__(self,master):
@@ -17,7 +16,6 @@ class Process(ttk.Frame):
         self.master = master
         self.files=[]
         self.btns=[]
-        self.cfile=''
         self.display=ttk.Frame(self)
         self.createWidgets()
 
@@ -71,27 +69,7 @@ class Process(ttk.Frame):
         self.dropdown = ttk.Combobox(self.panel, values=['first','last','min', 'max'], state='readonly')
         self.dropdown.grid(row=3, column=0, sticky='nsew', padx=10, pady=10)
         self.dropdown.current(0)
-        #added shapefile button
-        self.shbtn = tk.Button(self, text='select Shapefile', command=self.shapefile)
-        self.shbtn.grid(row=5, column=0, sticky='nsew', padx=10, pady=10)
-        #added button to perform clipping
-        self.cpbtn = tk.Button(self, text='clip mosaic', command=self.ClipImage)
-        self.cpbtn.grid(row=6, column=0, sticky='nsew', padx=10, pady=10)
         
-    def shapefile(self, event=None):
-        self.cfile = filedialog.askopenfilename()
-        if(self.cfile!=() and self.cfile!=''):
-            ind= self.cfile.rfind('/')
-            self.shbtn["text"]='shape: '+self.file2[ind+1:]
-        else: self.cfile=''
-                
-    def ClipImage(self, event=None):
-        if self.window.winfo_exists():
-            self.window.grid_forget()
-            self.window.destroy()
-        self.header['text'] = 'Clip the Mosaic'
-        self.window = Clipping(self)
-        self.window.grid(row=1, column=0, columnspan=4, sticky='nsew')
         
     def choose(self, event=None):            # event handler for choose file
         ffile = filedialog.askopenfilename()
@@ -105,3 +83,4 @@ class Process(ttk.Frame):
                 self.createbtn['state']='normal'
             
         
+

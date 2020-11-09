@@ -16,20 +16,21 @@ from ImageViewer import ViewImage
 from Process import Process
 import os
 from datetime import datetime
-
+#clip file
+from clipmosaic import clipping
 
 class RootFrame(ttk.Frame):
     def __init__(self, master):
         super().__init__(master)
         self.master = master
-        master.title("GPS Data Analysis")		# title bar
+        master.title("GPS Data Analysis")        # title bar
         self.file1=''               # contains the contents of the data file
         self.file2=''
         self.file3=''
         self.pack(fill=tk.BOTH, expand=1)
         self.window=tk.Frame(self)
-        self.createWidgets()			# call to create widgets
-		
+        self.createWidgets()            # call to create widgets
+        
     def createWidgets(self):
 
         self.grid_columnconfigure(0,weight=0)
@@ -40,7 +41,7 @@ class RootFrame(ttk.Frame):
 
         self.grid_rowconfigure(0,weight=0)
         self.grid_rowconfigure(1,weight=1)
-        	
+            
         
         self.panel=ttk.Frame(self)
         self.panel.grid(row=0, column=0, sticky='nsew')
@@ -54,12 +55,17 @@ class RootFrame(ttk.Frame):
         self.menuBtn3 = ttk.Button(self.panel, text="Show Image")
         self.menuBtn3.grid(row=0, column=2)
 
+        #$
+        self.menuBtn4 = ttk.Button(self.panel, text="Clip Mosaic", command=self.clipping)
+        self.menuBtn4.grid(row=0, column=3)
+        #$
+        
         self.header = ttk.Label(self, text="",font="Arial 15 bold")
-        self.header.grid(row=0, column=3)
+        self.header.grid(row=0, column=4)
         
         self.getInput()
 
-				
+                
     def getInput(self, event=None):
         if self.window.winfo_exists():
             self.window.grid_forget()
@@ -76,8 +82,15 @@ class RootFrame(ttk.Frame):
         self.header['text'] = 'Process'
         self.window = Process(self)
         self.window.grid(row=1, column=0, columnspan=4, sticky='nsew')
-      
-		
+    #$
+    def clipping(self, event=None):
+        if self.window.winfo_exists():
+            self.window.grid_forget()
+            self.window.destroy()
+        self.header['text'] = 'Clipping'
+        self.window = clipping(self)
+        self.window.grid(row=1, column=0, columnspan=4, sticky='nsew')
+    #$
 
 
 
