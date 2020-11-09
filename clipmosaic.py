@@ -108,6 +108,6 @@ class clipping(ttk.Frame):
         lidar_chm_crop_ma = np.ma.masked_equal(lidar_chm_crop[0], -9999.0)
         ep.plot_bands(lidar_chm_crop_ma, cmap='terrain', cbar=False);
         #save output
-        path_out = "/Users/yash/Documents/test/crp2.tif"
+        path_out = "clipped_image.tif"
         with rio.open(path_out, 'w', **soap_lidar_meta) as ff: ff.write(lidar_chm_crop[0], 1)
 
