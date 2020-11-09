@@ -13,6 +13,11 @@ Install earthpy:
 pip3 install earthpy
 ```
 
+Install cartopy:
+```bash
+pip3 install cartopy
+```
+
 Run using:
 ```bash
 python3 interface.py
