@@ -66,7 +66,7 @@ class clipping(ttk.Frame):
         self.msfile = filedialog.askopenfilename()
         if(self.msfile!=() and self.msfile!=''):
             ind= self.msfile.rfind('/')
-            self.msbtn["text"]='shape: '+self.msfile[ind+1:]
+            self.msbtn["text"]='mosaic: '+self.msfile[ind+1:]
         else: self.msfile=''
 
     def ClipImage(self):
