@@ -1,6 +1,10 @@
+import os
+import glob
 import tkinter as tk
 from tkinter import ttk
 import rasterio
+import earthpy as et
+import earthpy.spatial as es
 import earthpy.plot as ep
 from rasterio.merge import merge
 from rasterio.plot import show
@@ -8,6 +12,7 @@ import matplotlib
 import numpy as np
 from tkinter import filedialog
 from matplotlib.figure import Figure
+import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 
 class Process(ttk.Frame):
@@ -16,6 +21,7 @@ class Process(ttk.Frame):
         self.master = master
         self.files=[]
         self.btns=[]
+        self.dir=[]
         self.display=ttk.Frame(self)
         self.createWidgets()
 
@@ -26,13 +32,13 @@ class Process(ttk.Frame):
             self.display.destroy()
             
         self.display = ttk.Frame(self)
-        self.display.grid(row = 0, column = 1,rowspan=2, sticky = 'nwes')
+        self.display.grid(row = 0, column = 2,rowspan=2, sticky = 'nwes')
         frame=self.display
         ff=[]
         for ffile in self.files:
             ff.append(rasterio.open(ffile))
         mos, out = merge(ff, method = self.dropdown.get())
-        self.figure = Figure(figsize = (10,6), dpi = 100)
+        self.figure = Figure(figsize = (6,4), dpi = 100)
         self.plot = self.figure.add_subplot(1,1,1)
         # show(mos, cmap='terrain' , ax = self.plot)
         ep.plot_rgb((mos), stretch=True, str_clip = 0.5 , ax = self.plot)
@@ -41,6 +47,32 @@ class Process(ttk.Frame):
         self.toolbar.update()
         self.canvas.get_tk_widget().pack()
 
+    def viewhist(self):
+        if self.display.winfo_exists():
+            self.display.grid_forget()
+            self.display.destroy()
+        
+        self.display = ttk.Frame(self)
+        self.display.grid(row = 0, column = 2,rowspan=2, sticky = 'nwes')
+        frame=self.display
+
+        dir = self.dir[0]
+        band_path = glob.glob(os.path.join(dir,"*.tif"))
+        # band_path = glob.glob(os.path.join(dir,"*.TIF"))
+        band_path.sort()
+        print(band_path[:8])
+        band_stack, meta_data = es.stack(band_path, nodata=-9999)
+        size = len(band_path)
+        color_list = ["Indigo","Blue","Green","Yellow","Red","Maroon","Purple","Violet"]
+        titles = ["Ultra Blue", "Blue", "Green", "Red", "NIR", "SWIR 1", "SWIR 2"]
+        self.figure,self.plot = ep.hist(band_stack, colors = color_list[:size], title = titles[:size],figsize = (6,4))
+        self.canvas = FigureCanvasTkAgg(self.figure,frame)
+        self.toolbar = NavigationToolbar2Tk(self.canvas,frame)
+        self.toolbar.update()
+        self.canvas.get_tk_widget().pack()
+
+        
+
     def createWidgets(self):
         self.grid_columnconfigure(0,weight = 0)
         self.grid_columnconfigure(1,weight = 1)
@@ -48,20 +80,26 @@ class Process(ttk.Frame):
         self.grid_rowconfigure(0,weight = 0)
         self.grid_rowconfigure(1,weight = 1)
         
-        
-        
         self.panel = ttk.Frame(self)
         self.panel.grid(row=1, column=0, sticky='nsew')
         
         self.txt = ttk.Label(self, text="Mosaic", font="Arial 15 bold")
         self.txt.grid(row=0, column=0,sticky='wens', padx=10, pady=10)
         
+        self.text = ttk.Label(self, text="Histogram", font="Arial 15 bold")
+        self.text.grid(row=0, column=1, sticky="wens", padx=10, pady=10)
         
+        self.dirbtn = ttk.Button(self.panel, text='Choose Directory...', command=self.choosedir)
+        self.dirbtn.grid(row=1, column=1, sticky='nsew', padx=10, pady=10)
+
         self.btn = ttk.Button(self.panel, text='Choose scene...', command=self.choose)
         self.btn.grid(row=1, column=0, sticky='nsew', padx=10, pady=10)
         
         self.createbtn = tk.Button(self, text='CREATE MOSAIC',bg='green', fg='white', command=self.create, state='disabled')
-        self.createbtn.grid(row=4, column=0, sticky='nsew', padx=10, pady=10)
+        self.createbtn.grid(row=4, column=0, sticky='nsew', padx=10, pady=10, columnspan=1)
+
+        self.histbtn = tk.Button(self, text='VIEW HISTOGRAM',bg='green', fg='white', command=self.viewhist, state='disabled')
+        self.histbtn.grid(row=4, column=1, sticky='nsew', padx=10, pady=10, columnspan=1)
         
         self.lbl = ttk.Label(self.panel, text="Choose Mosaic Options", font="Arial 10")
         self.lbl.grid(row=2, column=0,sticky='wens', padx=10, pady=2)
@@ -81,6 +119,14 @@ class Process(ttk.Frame):
             self.files.append(ffile)
             if(len(self.files)>=1):
                 self.createbtn['state']='normal'
-            
+
+    def choosedir(self, event=None):            # event handler for choosing directory
+        dir = filedialog.askdirectory()
+        if(dir!=() and dir!=''):
+            ind= dir.rfind('/')
+            dirbtn = ttk.Button(self.panel, text = dir[ind+1:])
+            dirbtn.grid(row=2,column=1, sticky='wens', padx=10, pady=10 )
+            self.dir.append(dir)
+            self.histbtn['state']='normal'
         
 
