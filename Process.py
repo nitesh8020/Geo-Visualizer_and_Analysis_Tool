@@ -32,7 +32,7 @@ class Process(ttk.Frame):
             self.display.destroy()
             
         self.display = ttk.Frame(self)
-        self.display.grid(row = 0, column = 2,rowspan=2, sticky = 'nwes')
+        self.display.grid(row = 0, column = 4,rowspan=2, sticky = 'nwes')
         frame=self.display
         ff=[]
         for ffile in self.files:
@@ -53,7 +53,7 @@ class Process(ttk.Frame):
             self.display.destroy()
         
         self.display = ttk.Frame(self)
-        self.display.grid(row = 0, column = 2,rowspan=2, sticky = 'nwes')
+        self.display.grid(row = 0, column = 4,rowspan=2, sticky = 'nwes')
         frame=self.display
 
         dir = self.dir[0]
@@ -82,23 +82,29 @@ class Process(ttk.Frame):
         
         self.panel = ttk.Frame(self)
         self.panel.grid(row=1, column=0, sticky='nsew')
+
+        self.histogramPanel = ttk.Frame(self)
+        self.histogramPanel.grid(row = 1, column = 1, sticky = 'nsew')
+
+        self.down = ttk.Frame(self)
+        self.down.grid(row = 2, column = 0, sticky = 'sw', columnspan = 4)
         
-        self.txt = ttk.Label(self, text="Mosaic", font="Arial 15 bold")
+        self.txt = ttk.Label(self.panel, text="Mosaic", font="Arial 15 bold")
         self.txt.grid(row=0, column=0,sticky='wens', padx=10, pady=10)
         
-        self.text = ttk.Label(self, text="Histogram", font="Arial 15 bold")
+        self.text = ttk.Label(self.histogramPanel, text="Histogram", font="Arial 15 bold")
         self.text.grid(row=0, column=1, sticky="wens", padx=10, pady=10)
         
-        self.dirbtn = ttk.Button(self.panel, text='Choose Directory...', command=self.choosedir)
+        self.dirbtn = ttk.Button(self.histogramPanel, text='Choose Directory...', command=self.choosedir)
         self.dirbtn.grid(row=1, column=1, sticky='nsew', padx=10, pady=10)
 
         self.btn = ttk.Button(self.panel, text='Choose scene...', command=self.choose)
         self.btn.grid(row=1, column=0, sticky='nsew', padx=10, pady=10)
         
-        self.createbtn = tk.Button(self, text='CREATE MOSAIC',bg='green', fg='white', command=self.create, state='disabled')
+        self.createbtn = tk.Button(self.down, text='CREATE MOSAIC',bg='green', fg='white', command=self.create, state='disabled')
         self.createbtn.grid(row=4, column=0, sticky='nsew', padx=10, pady=10, columnspan=1)
 
-        self.histbtn = tk.Button(self, text='VIEW HISTOGRAM',bg='green', fg='white', command=self.viewhist, state='disabled')
+        self.histbtn = tk.Button(self.down, text='VIEW HISTOGRAM',bg='green', fg='white', command=self.viewhist, state='disabled')
         self.histbtn.grid(row=4, column=1, sticky='nsew', padx=10, pady=10, columnspan=1)
         
         self.lbl = ttk.Label(self.panel, text="Choose Mosaic Options", font="Arial 10")
@@ -124,7 +130,7 @@ class Process(ttk.Frame):
         dir = filedialog.askdirectory()
         if(dir!=() and dir!=''):
             ind= dir.rfind('/')
-            dirbtn = ttk.Button(self.panel, text = dir[ind+1:])
+            dirbtn = ttk.Button(self.histogramPanel, text = dir[ind+1:])
             dirbtn.grid(row=2,column=1, sticky='wens', padx=10, pady=10 )
             self.dir.append(dir)
             self.histbtn['state']='normal'
