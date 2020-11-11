@@ -15,9 +15,11 @@ import numpy as np
 from ImageViewer import ViewImage
 from Process import Process
 import os
+from Indices import Index
 from datetime import datetime
 #clip file
 from clipmosaic import clipping
+
 
 class RootFrame(ttk.Frame):
     def __init__(self, master):
@@ -52,7 +54,7 @@ class RootFrame(ttk.Frame):
         self.menuBtn2 = ttk.Button(self.panel, text="Process", command=self.Process)
         self.menuBtn2.grid(row=0, column=1)
         
-        self.menuBtn3 = ttk.Button(self.panel, text="Show Image")
+        self.menuBtn3 = ttk.Button(self.panel, text="Index", command=self.calIndex)
         self.menuBtn3.grid(row=0, column=2)
 
         #$
@@ -91,6 +93,15 @@ class RootFrame(ttk.Frame):
         self.window = clipping(self)
         self.window.grid(row=1, column=0, columnspan=4, sticky='nsew')
     #$
+    
+    
+    def calIndex(self, event=None):
+        if self.window.winfo_exists():
+            self.window.grid_forget()
+            self.window.destroy()
+        self.header['text'] = 'Indices'
+        self.window = Index(self)
+        self.window.grid(row=1, column=0, columnspan=4, sticky='nsew')
 
 
 
