@@ -106,6 +106,7 @@ class RootFrame(ttk.Frame):
 
 
 root=tk.Tk()
+root.tk.call('wm', 'iconphoto', root._w, tk.PhotoImage(file='./icon/globe.png'))
 root.geometry("1200x600")
 root.configure(background='#eff0f1')
 style=ThemedStyle(root)
