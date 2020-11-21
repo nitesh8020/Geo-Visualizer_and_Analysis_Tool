@@ -18,7 +18,7 @@ import os
 from Indices import Index
 from datetime import datetime
 #clip file
-from clipmosaic import clipping
+# from clipmosaic import clipping
 
 
 class RootFrame(ttk.Frame):

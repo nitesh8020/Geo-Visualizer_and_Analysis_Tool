@@ -21,7 +21,8 @@ class Process(ttk.Frame):
         self.master = master
         self.files=[]
         self.btns=[]
-        self.dir=[]
+        self.histbtns=[]
+        self.histfiles=[]
         self.display=ttk.Frame(self)
         self.createWidgets()
 
@@ -56,16 +57,21 @@ class Process(ttk.Frame):
         self.display.grid(row = 0, column = 4,rowspan=2, sticky = 'nwes')
         frame=self.display
 
-        dir = self.dir[0]
-        band_path = glob.glob(os.path.join(dir,"*.tif"))
+        band_path=[]
+        for file in self.histfiles:
+            band_path.append(file)
+        
+        # dir = self.dir[0]
+        # band_path = glob.glob(os.path.join(dir,"*.tif"))
         # band_path = glob.glob(os.path.join(dir,"*.TIF"))
         band_path.sort()
-        print(band_path[:8])
         band_stack, meta_data = es.stack(band_path, nodata=-9999)
         size = len(band_path)
         color_list = ["Indigo","Blue","Green","Yellow","Red","Maroon","Purple","Violet"]
-        titles = ["Ultra Blue", "Blue", "Green", "Red", "NIR", "SWIR 1", "SWIR 2"]
-        self.figure,self.plot = ep.hist(band_stack, colors = color_list[:size], title = titles[:size],figsize = (6,4))
+        titles = []
+        for i in range(size):
+            titles.append("File"+str(i+1))
+        self.figure,self.plot = ep.hist(band_stack, title = titles,figsize = (6,4))
         self.canvas = FigureCanvasTkAgg(self.figure,frame)
         self.toolbar = NavigationToolbar2Tk(self.canvas,frame)
         self.toolbar.update()
@@ -95,7 +101,7 @@ class Process(ttk.Frame):
         self.text = ttk.Label(self.histogramPanel, text="Histogram", font="Arial 15 bold")
         self.text.grid(row=0, column=1, sticky="wens", padx=10, pady=10)
         
-        self.dirbtn = ttk.Button(self.histogramPanel, text='Choose Directory...', command=self.choosedir)
+        self.dirbtn = ttk.Button(self.histogramPanel, text='Choose BandFile', command=self.choosehist)
         self.dirbtn.grid(row=1, column=1, sticky='nsew', padx=10, pady=10)
 
         self.btn = ttk.Button(self.panel, text='Choose scene...', command=self.choose)
@@ -126,13 +132,15 @@ class Process(ttk.Frame):
             if(len(self.files)>=1):
                 self.createbtn['state']='normal'
 
-    def choosedir(self, event=None):            # event handler for choosing directory
-        dir = filedialog.askdirectory()
-        if(dir!=() and dir!=''):
-            ind= dir.rfind('/')
-            dirbtn = ttk.Button(self.histogramPanel, text = dir[ind+1:])
-            dirbtn.grid(row=2,column=1, sticky='wens', padx=10, pady=10 )
-            self.dir.append(dir)
-            self.histbtn['state']='normal'
+    def choosehist(self, event=None):            # event handler for choosing directory
+        histfile = filedialog.askopenfilename()
+        if(histfile!=() and histfile!=''):
+            ind= histfile.rfind('/')
+            histbtn = ttk.Button(self.histogramPanel, text = histfile[ind+1:])
+            histbtn.grid(row=len(self.histbtns)+4,column=1, sticky='wens', padx=10, pady=10 )
+            self.histbtns.append(histbtn)
+            self.histfiles.append(histfile)
+            if(len(self.histfiles)>=1):
+                self.histbtn['state']='normal'
         
 
