@@ -17,6 +17,7 @@ from Process import Process
 import os
 from Indices import Index
 from datetime import datetime
+from classification import segmentation
 #clip file
 # from clipmosaic import clipping
 
@@ -61,9 +62,12 @@ class RootFrame(ttk.Frame):
         self.menuBtn4 = ttk.Button(self.panel, text="Clip Mosaic", command=self.clipping)
         self.menuBtn4.grid(row=0, column=3)
         #$
+
+        self.menuBtn5 = ttk.Button(self.panel, text="Classification", command=self.segmentation)
+        self.menuBtn5.grid(row=0, column=4)
         
         self.header = ttk.Label(self, text="",font="Arial 15 bold")
-        self.header.grid(row=0, column=4)
+        self.header.grid(row=0, column=5)
         
         self.getInput()
 
@@ -94,6 +98,14 @@ class RootFrame(ttk.Frame):
         self.window.grid(row=1, column=0, columnspan=4, sticky='nsew')
     #$
     
+    def segmentation(self, event=None):
+        if self.window.winfo_exists():
+            self.window.grid_forget()
+            self.window.destroy()
+        self.header['text'] = 'Image Segmentation'
+        self.window = segmentation(self)
+        self.window.grid(row=1, column=0, columnspan=4, sticky='nsew')
+
     
     def calIndex(self, event=None):
         if self.window.winfo_exists():
