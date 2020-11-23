@@ -33,11 +33,12 @@ class segmentation(ttk.Frame):
         frame=self.display
         
         file=self.files[0]
-        image = imread('band.tiff') / 255
+        image = imread(file) / 255
         l,b,c = image.shape
 
+        nclusters = int(self.clusterInput.get())
         rescale_image = image.reshape(l*b,c)
-        kmeans = KMeans(n_clusters=2, random_state=0).fit(rescale_image)
+        kmeans = KMeans(n_clusters=nclusters, random_state=0).fit(rescale_image)
         clustered = kmeans.cluster_centers_[kmeans.labels_]
         final_image = clustered.reshape(image.shape[0], image.shape[1], 3)
         self.figure = Figure(figsize = (6,4), dpi = 100)
@@ -64,9 +65,15 @@ class segmentation(ttk.Frame):
         
         self.txt = ttk.Label(self.panel, text="K-Means Segmentation", font="Arial 15 bold")
         self.txt.grid(row=0, column=0,sticky='wens', padx=10, pady=10)
+
+        self.clusterLabel = ttk.Label(self.panel, text = "Enter number of clusters : ")
+        self.clusterLabel.grid(row=1, column=0, sticky = 'nsew', padx = 10, pady = 10)
+
+        self.clusterInput = ttk.Entry(self.panel)
+        self.clusterInput.grid(row=2, column=0, sticky = 'nsew', padx = 10, pady = 10)
         
         self.btn = ttk.Button(self.panel, text='Choose Image', command=self.choose)
-        self.btn.grid(row=1, column=0, sticky='nsew', padx=10, pady=10)
+        self.btn.grid(row=3, column=0, sticky='nsew', padx=10, pady=10)
 
         self.createbtn = tk.Button(self.down, text='CREATE SEGMENTATION',bg='green', fg='white', command=self.create, state='disabled')
         self.createbtn.grid(row=4, column=0, sticky='nsew', padx=10, pady=10, columnspan=1)
