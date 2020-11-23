@@ -26,10 +26,11 @@ class ViewImage(ttk.Frame):
 
 
     def showImage(self):
-        directory = os.getcwd()
-        now = datetime.now()
-        dt_string = now.strftime("%d_%m_%Y_%H:%M:%S")
-        outdir = directory + '/img_STACK' + dt_string + '.tiff'
+        # directory = os.getcwd()
+        # now = datetime.now()
+        # dt_string = now.strftime("%d_%m_%Y_%H:%M:%S")
+        # outdir = directory + '/img_STACK' + dt_string + '.tiff'
+        outdir = 'OutputImages/'+self.out_name.get() + '.tiff'
         frame=self.frame
         self.band_fnames = [self.file1,self.file2,self.file3]
         arr_st, meta = es.stack(self.band_fnames, out_path = outdir, nodata = 0)
@@ -63,6 +64,12 @@ class ViewImage(ttk.Frame):
 
         self.choose_button3 = ttk.Button(self.chooseButtons, text="Blue File", command = self.ChooseFileAction3)
         self.choose_button3.grid(row=1, column=2, padx=5, pady=5)
+
+        self.file_name_entry_Label = ttk.Label(self.chooseButtons, text="Output File Name")
+        self.file_name_entry_Label.grid(row=2,column=0,padx=5,pady=5)
+
+        self.out_name = ttk.Entry(self.chooseButtons)
+        self.out_name.grid(row = 2, column = 1, padx = 5, pady = 5)
         
         
         
