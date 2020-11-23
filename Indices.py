@@ -83,6 +83,7 @@ class Index(ttk.Frame):
         self.toolbar = NavigationToolbar2Tk(self.canvas,frame)
         self.toolbar.update()
         self.canvas.get_tk_widget().pack()
+        self.saveImg(self.calc)
 	
     def createNDVI(self):
         if self.display.winfo_exists():
@@ -109,6 +110,10 @@ class Index(ttk.Frame):
         self.toolbar = NavigationToolbar2Tk(self.canvas,frame)
         self.toolbar.update()
         self.canvas.get_tk_widget().pack()
+        self.saveImg(self.ndvi)
+        # image_in = "ndviImage.tif"
+        # image_out = "path_output_image.tif"
+        # subprocess.call(["gdal_translate","-of","GTiff", "-ot", "Byte", "-scale", image_in, image_out ])
 
         
 
@@ -141,12 +146,19 @@ class Index(ttk.Frame):
         self.entry = ttk.Entry(self.panel)
         self.entry.insert(0, '(nir-r)/(nir+r)')
         self.entry.grid(row=5, column=0, sticky='nsew', padx=10, pady=10)
+
+        self.label = ttk.Label(self.panel, text = 'Enter Output File Name: ')
+        self.label.grid(row = 6, column = 0, sticky = 'nsew', padx=10, pady=10)
+
+        self.out_name = ttk.Entry(self.panel)
+        self.out_name.grid(row = 7, column = 0, sticky = 'nsew', padx = 10, pady = 10)
+
         
         self.btnNDVI = ttk.Button(self.panel, text='NDVI', command=self.createNDVI)
-        self.btnNDVI.grid(row=6, column=0, sticky='nsew', padx=10, pady=10)
+        self.btnNDVI.grid(row=8, column=0, sticky='nsew', padx=10, pady=10)
         
         self.btncreate = ttk.Button(self.panel, text='Calculate Index from formula', command=self.create)
-        self.btncreate.grid(row=7, column=0, sticky='nsew', padx=10, pady=10)
+        self.btncreate.grid(row=9, column=0, sticky='nsew', padx=10, pady=10)
         
         
         
@@ -180,4 +192,19 @@ class Index(ttk.Frame):
             self.B=ffile
 
         
-
+    def saveImg(self,name):                   # Function to save the image
+        source = ''
+        outputFile = 'OutputImages/' + self.out_name.get() + '.tiff'
+        if (self.NIR!=''):
+            source = self.NIR
+        elif self.R!='':
+            source = self.R
+        elif self.G!='':
+            source = self.G
+        else:
+            source = self.B
+        src1 = rasterio.open(source)
+        ndviImage = rasterio.open(outputFile,'w',driver='Gtiff',width=src1.width, height = src1.height, count=1, crs=src1.crs, transform=src1.transform, dtype='float64')
+        ndviImage.write(name,1)
+        ndviImage.close()
+        
