@@ -1,3 +1,8 @@
+'''Process.py to implement functions for processing of tiff files
+It creates a mosaic using selected scenes and an histogram and saves them in the specified directory
+Main libraries used are tkinter, glob, rasterio, earthpy and matplotlib'''
+
+
 import os
 import glob
 import tkinter as tk
@@ -27,7 +32,7 @@ class Process(ttk.Frame):
         self.createWidgets()
 
 
-    def create(self):
+    def create(self):                       # Function to create the frame
         if self.display.winfo_exists():
             self.display.grid_forget()
             self.display.destroy()
@@ -54,7 +59,7 @@ class Process(ttk.Frame):
             dst.write(mos)
 
 
-    def viewhist(self):
+    def viewhist(self):                         # Function to display the histogram in the frame and save it in the specified directory
         if self.display.winfo_exists():
             self.display.grid_forget()
             self.display.destroy()
@@ -85,7 +90,7 @@ class Process(ttk.Frame):
 
         
 
-    def createWidgets(self):
+    def createWidgets(self):                        # Create widgets
         self.grid_columnconfigure(0,weight = 0)
         self.grid_columnconfigure(1,weight = 1)
         

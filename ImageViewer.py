@@ -1,3 +1,9 @@
+'''ImageViewer.py to take the input files and display the image
+The program takes three files: Red, Blue and Green and merges them
+Main libraries used are tkinter, glob, rasterio, earthpy, geopandas and matplotlib'''
+
+
+
 import tkinter as tk
 from tkinter import ttk
 from glob import glob
@@ -15,6 +21,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolb
 import os
 from datetime import datetime
 
+# create class
 class ViewImage(ttk.Frame):
     def __init__(self,master):
         super().__init__(master)
@@ -25,7 +32,7 @@ class ViewImage(ttk.Frame):
         self.createWidgets()
 
 
-    def showImage(self):
+    def showImage(self):                    # Function to display the image in frame
         # directory = os.getcwd()
         # now = datetime.now()
         # dt_string = now.strftime("%d_%m_%Y_%H:%M:%S")
@@ -42,7 +49,7 @@ class ViewImage(ttk.Frame):
         self.toolbar.update()
         self.canvas.get_tk_widget().pack()
 
-    def createWidgets(self):
+    def createWidgets(self):                # Creating widgets for frame
         self.grid_columnconfigure(0,weight = 0)
         self.grid_columnconfigure(1,weight = 1)
         

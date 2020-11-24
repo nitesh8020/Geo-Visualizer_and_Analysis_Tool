@@ -1,3 +1,9 @@
+'''classification.py processes the image through image segmentation and then performs classification
+Image segmentation is done through k means
+Main libraries used are tkinter, pandas, sklearn, skimage, earthpy and matplotlib'''
+
+
+
 import tkinter as tk
 from tkinter import ttk
 import os
@@ -15,6 +21,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolb
 import warnings
 warnings.filterwarnings('ignore')
 
+# define class segmentation
 class segmentation(ttk.Frame):
     def __init__(self,master):
         super().__init__(master)
@@ -23,7 +30,7 @@ class segmentation(ttk.Frame):
         self.createWidgets()
         self.files=[]
 
-    def create(self):
+    def create(self):                       # create the main frame and k means image segmentation program
         if self.display.winfo_exists():
             self.display.grid_forget()
             self.display.destroy()
@@ -50,7 +57,7 @@ class segmentation(ttk.Frame):
         self.canvas.get_tk_widget().pack()
 
 
-    def createWidgets(self):
+    def createWidgets(self):                               # Create Widgets for frame
         self.grid_columnconfigure(0,weight = 0)
         self.grid_columnconfigure(1,weight = 1)
         

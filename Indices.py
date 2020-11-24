@@ -1,3 +1,8 @@
+'''Indices.py computes indices for the input tiff files
+It also provides a way to manipulate the formula for calculating indices
+Main libraries used are tkinter, rasterio, matplotlib and earthpy'''
+
+
 import os
 import glob
 import tkinter as tk
@@ -15,7 +20,7 @@ from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 
-
+# Define class
 class Index(ttk.Frame):
     def __init__(self,master):
         super().__init__(master)
@@ -28,7 +33,7 @@ class Index(ttk.Frame):
         self.createWidgets()
 
 
-    def create(self):
+    def create(self):                   # Funtion to cleate the main frame
         if self.display.winfo_exists():
             self.display.grid_forget()
             self.display.destroy()
@@ -85,7 +90,7 @@ class Index(ttk.Frame):
         self.canvas.get_tk_widget().pack()
         self.saveImg(self.calc)
 	
-    def createNDVI(self):
+    def createNDVI(self):                   # Function to create NDVI
         if self.display.winfo_exists():
             self.display.grid_forget()
             self.display.destroy()
