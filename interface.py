@@ -52,11 +52,11 @@ class RootFrame(ttk.Frame):
         self.panel=ttk.Frame(self)
         self.panel.grid(row=0, column=0, sticky='nsew')
         
-        self.menuBtn1 = ttk.Button(self.panel, text="Input", command=self.getInput)
+        self.menuBtn1 = ttk.Button(self.panel, text="Create RGB image", command=self.getInput)
         self.menuBtn1.grid(row=0, column=0)
         self.menubtns.append(self.menuBtn1)
         
-        self.menuBtn2 = ttk.Button(self.panel, text="Process", command=self.Process)
+        self.menuBtn2 = ttk.Button(self.panel, text="Mosaic & Histogram", command=self.Process)
         self.menuBtn2.grid(row=0, column=1)
         self.menubtns.append(self.menuBtn2)
         
