@@ -98,7 +98,7 @@ class RootFrame(ttk.Frame):
         if self.window.winfo_exists():
             self.window.grid_forget()
             self.window.destroy()
-        self.header['text'] = 'Feed Input Data Here'
+        self.header['text'] = 'Create RGB Image'
         self.window = ViewImage(self)
         self.window.grid(row=1, column=0, columnspan=4, sticky='nsew')
         self.set(0)
