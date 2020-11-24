@@ -143,7 +143,11 @@ root.tk.call('wm', 'iconphoto', root._w, tk.PhotoImage(file='./icon/globe.png'))
 root.geometry("1200x600")
 
 style=ThemedStyle(root)
-style.set_theme('breeze')
+themes=[]
+for th in open('./themes.txt').readlines():themes.append(th.strip())
+theme=open('./settings.txt').readlines()[0].split(' ')[1].strip()
+if(theme not in themes): theme='breeze'
+style.set_theme(theme)
 
 my_gui = RootFrame(root)
 
