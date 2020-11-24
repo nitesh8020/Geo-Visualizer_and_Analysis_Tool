@@ -41,13 +41,13 @@ class Process(ttk.Frame):
         mos, out = merge(ff, method = self.dropdown.get())
         self.figure = Figure(figsize = (6,4), dpi = 100)
         self.plot = self.figure.add_subplot(1,1,1)
-        # show(mos, cmap='terrain' , ax = self.plot)
+        #show(mos, cmap='terrain' , ax = self.plot)
         ep.plot_rgb((mos), stretch=True, str_clip = 0.5 , ax = self.plot)
         self.canvas = FigureCanvasTkAgg(self.figure,frame)
         self.toolbar = NavigationToolbar2Tk(self.canvas,frame)
         self.toolbar.update()
         self.canvas.get_tk_widget().pack()
-        out_path = 'OutputImages/mosaic.tif'
+        out_path = 'OutputImages/'+self.entry.get()+'.tif'
         out_meta = ff[0].meta.copy()
         out_meta.update({"driver": "GTiff","height": mos.shape[1],"width": mos.shape[2],"transform": out,"crs": "+proj=utm +zone=35 +ellps=GRS80 +units=m +no_defs "})
         with rasterio.open(out_path, 'w', **out_meta) as dst:
@@ -112,6 +112,14 @@ class Process(ttk.Frame):
 
         self.btn = ttk.Button(self.panel, text='Choose scene...', command=self.choose)
         self.btn.grid(row=1, column=0, sticky='nsew', padx=10, pady=10)
+        
+        
+        self.nameLbl = ttk.Label(self.down, text='Enter name for mosaic file(.tif)')
+        self.nameLbl.grid(row=0, column=0 , columnspan=1, padx=10, pady=10)
+        self.entry = ttk.Entry(self.down)
+        self.entry.insert(0, 'mosaic')
+        self.entry.grid(row=1, column=0, sticky='snwe', columnspan=1, padx=10, pady=10)
+        
         
         self.createbtn = tk.Button(self.down, text='CREATE MOSAIC',bg='green', fg='white', command=self.create, state='disabled')
         self.createbtn.grid(row=4, column=0, sticky='nsew', padx=10, pady=10, columnspan=1)

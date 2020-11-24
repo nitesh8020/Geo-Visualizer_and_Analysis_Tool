@@ -67,7 +67,7 @@ class RootFrame(ttk.Frame):
         self.menuBtn5.grid(row=0, column=4)
         
         self.header = ttk.Label(self, text="",font="Arial 15 bold")
-        self.header.grid(row=0, column=5)
+        self.header.grid(row=0, column=3)
         
         self.getInput()
 
