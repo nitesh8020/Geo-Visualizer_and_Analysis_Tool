@@ -58,28 +58,17 @@ class RootFrame(ttk.Frame):
         self.panel.grid(row=0, column=0, sticky='nsew')
 
         # Buttons to navigate between frames
-        self.menuBtn1 = ttk.Button(self.panel, text="Feed Data", command=self.getInput)
-        
         self.menuBtn1 = ttk.Button(self.panel, text="Create RGB image", command=self.getInput)
         self.menuBtn1.grid(row=0, column=0)
         self.menubtns.append(self.menuBtn1)
         
-
-        self.menuBtn2 = ttk.Button(self.panel, text="Analysis", command=self.Process)
         self.menuBtn2 = ttk.Button(self.panel, text="Mosaic & Histogram", command=self.Process)
-
         self.menuBtn2.grid(row=0, column=1)
         self.menubtns.append(self.menuBtn2)
         
         self.menuBtn3 = ttk.Button(self.panel, text="Compute Indices", command=self.calIndex)
         self.menuBtn3.grid(row=0, column=2)
         self.menubtns.append(self.menuBtn3)
-
-        self.menuBtn4 = ttk.Button(self.panel, text="Clip Mosaic", command=self.clipping)
-        self.menuBtn4.grid(row=0, column=3)
-
-        self.menuBtn5 = ttk.Button(self.panel, text="Classify Data", command=self.segmentation)
-        self.menuBtn5.grid(row=0, column=4)
 
         #$
         # self.menuBtn4 = ttk.Button(self.panel, text="Clip Mosaic", command=self.clipping)
@@ -122,6 +111,7 @@ class RootFrame(ttk.Frame):
         self.header['text'] = 'Analysis and Processing of data'
         self.window = Process(self)
         self.window.grid(row=1, column=0, columnspan=4, sticky='nsew')
+        self.set(1)
     
 
     def clipping(self, event=None):             # Function to Clip the mosaic using 'clipping.py'
@@ -145,7 +135,7 @@ class RootFrame(ttk.Frame):
         self.header['text'] = 'Image Segmentation'
         self.window = segmentation(self)
         self.window.grid(row=1, column=0, columnspan=4, sticky='nsew')
-        self.set(4)
+        self.set(3)
 
     
     def calIndex(self, event=None):             #   Function to compute indices using 'Index.py'
