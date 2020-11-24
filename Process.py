@@ -47,6 +47,12 @@ class Process(ttk.Frame):
         self.toolbar = NavigationToolbar2Tk(self.canvas,frame)
         self.toolbar.update()
         self.canvas.get_tk_widget().pack()
+        out_path = 'OutputImages/mosaic.tif'
+        out_meta = ff[0].meta.copy()
+        out_meta.update({"driver": "GTiff","height": mos.shape[1],"width": mos.shape[2],"transform": out,"crs": "+proj=utm +zone=35 +ellps=GRS80 +units=m +no_defs "})
+        with rasterio.open(out_path, 'w', **out_meta) as dst:
+            dst.write(mos)
+
 
     def viewhist(self):
         if self.display.winfo_exists():
