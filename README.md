@@ -30,3 +30,6 @@ Remove GeoVisualizerAndAnalysisTool icon from launcher:
 ```bash
 python3 remove.py
 ```
+
+
+To change theme, edit settings.txt and replace the theme name. Available themes can be found in themes.txt
