@@ -108,7 +108,7 @@ class RootFrame(ttk.Frame):
         if self.window.winfo_exists():
             self.window.grid_forget()
             self.window.destroy()
-        self.header['text'] = 'Analysis and Processing of data'
+        self.header['text'] = 'Mosaic & Histogram'
         self.window = Process(self)
         self.window.grid(row=1, column=0, columnspan=4, sticky='nsew')
         self.set(1)
