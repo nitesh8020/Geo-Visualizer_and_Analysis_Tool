@@ -15,6 +15,7 @@ import earthpy.plot as ep
 import earthpy.spatial as es
 import cartopy as cp
 from tkinter import filedialog
+from osgeo import gdal
 
 import warnings
 warnings.filterwarnings('ignore')
@@ -24,7 +25,6 @@ class clipping(ttk.Frame):
         super().__init__(master)
         self.master = master
         self.msfile=''   #mosaic file
-        self.shfile=''   #shapefile to clip mosaic
         self.display=ttk.Frame(self)
         self.createWidgets()
 
@@ -37,11 +37,6 @@ class clipping(ttk.Frame):
 
         self.panel = ttk.Frame(self)
         self.panel.grid(row=1, column=0, sticky='nsew')
-
-    
-        #shapefile selection button
-        self.shbtn = tk.Button(self, text='select Shapefile', command=self.shapefile)
-        self.shbtn.grid(row=2, column=0, sticky='nsew', padx=10, pady=10)
         
         #mosaicfile selection button
         self.msbtn = tk.Button(self, text='select Mosaicfile', command=self.mosaicfile)
@@ -52,13 +47,6 @@ class clipping(ttk.Frame):
         self.cpbtn.grid(row=4, column=0, sticky='nsew', padx=10, pady=10)
 
     
-    def shapefile(self, event=None):
-        self.shfile = filedialog.askopenfilename()
-        if(self.shfile!=() and self.shfile!=''):
-            ind= self.shfile.rfind('/')
-            self.shbtn["text"]='shape: '+self.shfile[ind+1:]
-        else: self.shfile=''
-
     def mosaicfile(self, event=None):
         self.msfile = filedialog.askopenfilename()
         if(self.msfile!=() and self.msfile!=''):
@@ -74,7 +62,6 @@ class clipping(ttk.Frame):
         self.display = ttk.Frame(self)
         self.display.grid(row = 0, column = 1,rowspan=2, sticky = 'nwes')
         
-        ##
         #mosaic file
         soap_chm_path = self.msfile
         with rio.open(soap_chm_path) as src:
