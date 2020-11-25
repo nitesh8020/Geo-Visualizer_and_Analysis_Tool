@@ -23,7 +23,6 @@ from Indices import Index
 from datetime import datetime
 from classification import segmentation
 from clipmosaic import clipping
-# from clipmosaic import clipping
 
 
 class RootFrame(ttk.Frame):
@@ -71,9 +70,9 @@ class RootFrame(ttk.Frame):
         self.menubtns.append(self.menuBtn3)
 
         #$
-        # self.menuBtn4 = ttk.Button(self.panel, text="Clip Mosaic", command=self.clipping)
-        # self.menuBtn4.grid(row=0, column=3)
-        # self.menubtns.append(self.menuBtn4)
+        self.menuBtn4 = ttk.Button(self.panel, text="Clip Mosaic", command=self.clipping)
+        self.menuBtn4.grid(row=0, column=5)
+        self.menubtns.append(self.menuBtn4)
         #$
 
         self.menuBtn5 = ttk.Button(self.panel, text="Classification", command=self.segmentation)
