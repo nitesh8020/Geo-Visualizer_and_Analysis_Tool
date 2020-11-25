@@ -92,13 +92,13 @@ class clipping(ttk.Frame):
         
         with rasterio.open(soap_chm_path) as src:
         #window = Window(padding, padding, src.width - 2 * padding, src.height - 2 * padding)
-        window = Window(x_min,y_min,x_max,y_max)
+            window = Window(x_min,y_min,x_max,y_max)
         
-        kwargs = src.meta.copy()
-        kwargs.update({'height': window.height, 'width': window.width, 'transform': rasterio.windows.transform(window, src.transform)})
+            kwargs = src.meta.copy()
+            kwargs.update({'height': window.height, 'width': window.width, 'transform': rasterio.windows.transform(window, src.transform)})
 
-        with rasterio.open(out_tif, 'w', **kwargs) as dst:
-            dst.write(src.read(window=window))
+            with rasterio.open(out_tif, 'w', **kwargs) as dst:
+                dst.write(src.read(window=window))
 
     def makeform(root, fields):
         entries = {}
