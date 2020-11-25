@@ -21,7 +21,7 @@ import warnings
 warnings.filterwarnings('ignore')
 
 fields = ('x_min', 'y_min', 'x_max', 'y_max')
-
+out_tif = "clipped_mosaic.tif"
 class clipping(ttk.Frame):
     def __init__(self,master):
         super().__init__(master)
@@ -67,36 +67,16 @@ class clipping(ttk.Frame):
         
         #mosaic file
         soap_chm_path = self.msfile
-        with rio.open(soap_chm_path) as src:
-            lidar_chm_im = src.read(masked=True)[0]
-            extent = rio.plot.plotting_extent(src)
-            soap_profile = src.profile
         #shapefile
-        crop_extent_soap = gpd.read_file(self.shfile)
+        with rasterio.open(soap_chm_path) as src:
+        #window = Window(padding, padding, src.width - 2 * padding, src.height - 2 * padding)
+        window = Window(x_min,y_min,x_max,y_max)
+        
+        kwargs = src.meta.copy()
+        kwargs.update({'height': window.height, 'width': window.width, 'transform': rasterio.windows.transform(window, src.transform)})
 
-        fig, ax = plt.subplots(figsize=(10, 10))
-        ep.plot_bands(lidar_chm_im,cmap='terrain',extent=extent,ax=ax,cbar=False)
-        crop_extent_soap.plot(ax=ax, alpha=.6, color='g');
-
-        with rio.open(soap_chm_path) as src:
-            lidar_chm_crop, soap_lidar_meta = es.crop_image(src,crop_extent_soap)
-
-        # Update the metadata to have the new shape (x and y and affine information)
-        soap_lidar_meta.update({"driver": "GTiff", "height": lidar_chm_crop.shape[0], "width": lidar_chm_crop.shape[1], "transform": soap_lidar_meta["transform"]})
-
-        # generate an extent for the newly cropped object for plotting
-        cr_ext = rio.transform.array_bounds(soap_lidar_meta['height'], soap_lidar_meta['width'], soap_lidar_meta['transform'])
-
-        bound_order = [0,2,1,3]
-        cr_extent = [cr_ext[b] for b in bound_order]
-        cr_extent, crop_extent_soap.total_bounds
-
-        # mask the nodata and plot the newly cropped raster layer
-        lidar_chm_crop_ma = np.ma.masked_equal(lidar_chm_crop[0], -9999.0)
-        ep.plot_bands(lidar_chm_crop_ma, cmap='terrain', cbar=False);
-        #save output
-        path_out = "clipped_mosaic.tif"
-        with rio.open(path_out, 'w', **soap_lidar_meta) as ff: ff.write(lidar_chm_crop[0], 1)
+        with rasterio.open(out_tif, 'w', **kwargs) as dst:
+            dst.write(src.read(window=window))
 
     def makeform(root, fields):
         entries = {}
