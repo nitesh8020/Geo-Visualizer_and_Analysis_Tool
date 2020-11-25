@@ -20,6 +20,8 @@ from osgeo import gdal
 import warnings
 warnings.filterwarnings('ignore')
 
+fields = ('x_min', 'y_min', 'x_max', 'y_max')
+
 class clipping(ttk.Frame):
     def __init__(self,master):
         super().__init__(master)
@@ -27,6 +29,7 @@ class clipping(ttk.Frame):
         self.msfile=''   #mosaic file
         self.display=ttk.Frame(self)
         self.createWidgets()
+        ents = makeform(root, fields)
 
     def createWidgets(self):
         self.grid_columnconfigure(0,weight = 0)
@@ -43,7 +46,7 @@ class clipping(ttk.Frame):
         self.msbtn.grid(row=3, column=0, sticky='nsew', padx=10, pady=10)
         
         #clipping button
-        self.cpbtn = tk.Button(self, text='clip mosaic', command=self.ClipImage)
+        self.cpbtn = tk.Button(self, text='clip mosaic', command=(lambda e=ents: self.ClipImage(e)))
         self.cpbtn.grid(row=4, column=0, sticky='nsew', padx=10, pady=10)
 
     
@@ -54,7 +57,7 @@ class clipping(ttk.Frame):
             self.msbtn["text"]='shape: '+self.msfile[ind+1:]
         else: self.msfile=''
 
-    def ClipImage(self):
+    def ClipImage(entries):
         if self.display.winfo_exists():
             self.display.grid_forget()
             self.display.destroy()
@@ -95,3 +98,16 @@ class clipping(ttk.Frame):
         path_out = "clipped_mosaic.tif"
         with rio.open(path_out, 'w', **soap_lidar_meta) as ff: ff.write(lidar_chm_crop[0], 1)
 
+    def makeform(root, fields):
+        entries = {}
+        for field in fields:
+            print(field)
+            row = tk.Frame(root)
+            lab = tk.Label(row, width=22, text=field+": ", anchor='w')
+            ent = tk.Entry(row)
+            ent.insert(0, "0")
+            row.pack(side=tk.TOP,fill=tk.X,padx=5,pady=5)
+        lab.pack(side=tk.LEFT)
+        ent.pack(side=tk.RIGHT, expand=tk.YES, fill=tk.X)
+        entries[field] = ent
+    return entries
