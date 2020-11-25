@@ -65,9 +65,31 @@ class clipping(ttk.Frame):
         self.display = ttk.Frame(self)
         self.display.grid(row = 0, column = 1,rowspan=2, sticky = 'nwes')
         
+        x_min = float(entries['x_min'].get())
+        y_min = float(entries['x_min'].get())
+        x_max = float(entries['x_min'].get())
+        y_max = float(entries['x_min'].get())
+        
         #mosaic file
         soap_chm_path = self.msfile
         #shapefile
+        dataset = gdal.Open(fp)
+        band = dataset.GetRasterBand(1)
+    
+        geotransform = dataset.GetGeoTransform()
+
+        arr = band.ReadAsArray()
+        plt.imshow(arr, cmap='terrain')
+        def mouse_move(event):
+            x, y = event.xdata, event.ydata
+
+
+        plt.connect('motion_notify_event', mouse_move)
+    
+        plt.axis('equal')
+        plt.show()
+
+        
         with rasterio.open(soap_chm_path) as src:
         #window = Window(padding, padding, src.width - 2 * padding, src.height - 2 * padding)
         window = Window(x_min,y_min,x_max,y_max)
