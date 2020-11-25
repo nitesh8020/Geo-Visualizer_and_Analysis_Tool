@@ -109,7 +109,7 @@ class clipping(ttk.Frame):
             ent = tk.Entry(row)
             ent.insert(0, "0")
             row.pack(side=tk.TOP,fill=tk.X,padx=5,pady=5)
-        lab.pack(side=tk.LEFT)
-        ent.pack(side=tk.RIGHT, expand=tk.YES, fill=tk.X)
-        entries[field] = ent
-    return entries
+            lab.pack(side=tk.LEFT)
+            ent.pack(side=tk.RIGHT, expand=tk.YES, fill=tk.X)
+            entries[field] = ent
+        return entries
