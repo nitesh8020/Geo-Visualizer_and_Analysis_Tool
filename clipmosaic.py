@@ -1,7 +1,4 @@
-# to explore clip
-# one can download shapes and mosiac images from
-# https://www.earthdatascience.org/workshops/gis-open-source-python/crop-raster-data-in-python/
-# downloading section : Download spatial-vector-lidar data subset (~172 MB)
+
 import tkinter as tk
 from tkinter import ttk
 import rasterio
