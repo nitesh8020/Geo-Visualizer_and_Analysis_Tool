@@ -143,7 +143,7 @@ class clipping(ttk.Frame):
         self.InputXmax.grid(row=7, column=0, sticky = 'nsew', padx = 10, pady = 10)
         
         #ymax
-        self.InputLabe4 = ttk.Label(self.panel, text = "y min")
+        self.InputLabe4 = ttk.Label(self.panel, text = "y max")
         self.InputLabe4.grid(row=8, column=0, sticky = 'nsew', padx = 10, pady = 10)
 
         self.InputYmax = ttk.Entry(self.panel)
