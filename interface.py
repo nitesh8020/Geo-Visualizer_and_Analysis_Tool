@@ -124,7 +124,6 @@ class RootFrame(ttk.Frame):
         self.header['text'] = 'Clip the Mosaic Image'
         self.window = clipping(self)
         self.window.grid(row=1, column=0, columnspan=4, sticky='nsew')
-        #self.set(3)
         self.set(4)
     #$
     
