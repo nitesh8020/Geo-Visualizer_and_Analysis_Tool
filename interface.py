@@ -80,7 +80,7 @@ class RootFrame(ttk.Frame):
         #$
         
         self.header = ttk.Label(self, text="",font="Arial 15 bold")
-        self.header.grid(row=0, column=6)
+        self.header.grid(row=0, column=3)
         
         
         
