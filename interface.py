@@ -22,7 +22,7 @@ import os
 from Indices import Index
 from datetime import datetime
 from classification import segmentation
-# from clipmosaic import clipping
+from clipmosaic import clipping
 
 
 class RootFrame(ttk.Frame):
@@ -69,18 +69,18 @@ class RootFrame(ttk.Frame):
         self.menuBtn3.grid(row=0, column=2)
         self.menubtns.append(self.menuBtn3)
 
-        #$
-        # self.menuBtn4 = ttk.Button(self.panel, text="Clip Mosaic", command=self.clipping)
-        # self.menuBtn4.grid(row=0, column=5)
-        # self.menubtns.append(self.menuBtn4)
-        #$
-
         self.menuBtn5 = ttk.Button(self.panel, text="Classification", command=self.segmentation)
         self.menuBtn5.grid(row=0, column=3)
         self.menubtns.append(self.menuBtn5)
         
+        #$
+        self.menuBtn4 = ttk.Button(self.panel, text="Clip Mosaic", command=self.clipping)
+        self.menuBtn4.grid(row=0, column=4)
+        self.menubtns.append(self.menuBtn4)
+        #$
+        
         self.header = ttk.Label(self, text="",font="Arial 15 bold")
-        self.header.grid(row=0, column=3)
+        self.header.grid(row=0, column=6)
         
         
         
@@ -113,18 +113,14 @@ class RootFrame(ttk.Frame):
         self.set(1)
     
 
-    # def clipping(self, event=None):             # Function to Clip the mosaic using 'clipping.py'
-    #     self.set(1)
-    # #$
-    # def clipping(self, event=None):
-    #     if self.window.winfo_exists():
-    #         self.window.grid_forget()
-    #         self.window.destroy()
-    #     self.header['text'] = 'Clip the Mosaic Image'
-    #     self.window = clipping(self)
-    #     self.window.grid(row=1, column=0, columnspan=4, sticky='nsew')
-    #     self.set(3)
-    #$
+    def clipping(self, event=None):
+        if self.window.winfo_exists():
+            self.window.grid_forget()
+            self.window.destroy()
+        self.header['text'] = 'Clip the Mosaic Image'
+        self.window = clipping(self)
+        self.window.grid(row=1, column=0, columnspan=4, sticky='nsew')
+        self.set(4)
     
     
     def segmentation(self, event=None):         #Function to classify processed image image segmentation
