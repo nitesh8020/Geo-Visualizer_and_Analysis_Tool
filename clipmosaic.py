@@ -1,3 +1,9 @@
+'''Function to perform clipping on the mosaic file. The input mosaic is provided in .tif file.
+Clipping is basically cropping the input image according to the given dimensions.
+These dimesions are specified as 'xmax', 'xmin', 'ymax' and 'ymin'.
+Main libraries used are tkinter, rasterio, shapely, geopandas, earthpy, cartopy, osgeo and matplotlib'''
+
+
 
 import tkinter as tk
 from tkinter import ttk
@@ -32,7 +38,7 @@ class clipping(ttk.Frame):
         self.display=ttk.Frame(self)
         self.createWidgets()
         
-    def show_image(self):
+    def show_image(self):                       # Display the original image
         if self.display.winfo_exists():
             self.display.grid_forget()
             self.display.destroy()
@@ -67,7 +73,7 @@ class clipping(ttk.Frame):
         self.toolbar.update()
         self.canvas_preview.get_tk_widget().pack(side='top', fill='both', expand = 1)
         
-    def show_clipped_image(self):
+    def show_clipped_image(self):                   # Display the clipped image
         if self.display.winfo_exists():
             self.display.grid_forget()
             self.display.destroy()
@@ -105,7 +111,7 @@ class clipping(ttk.Frame):
     
         
 
-    def createWidgets(self):
+    def createWidgets(self):                        # create widgets
         self.grid_columnconfigure(0,weight = 0)
         self.grid_columnconfigure(1,weight = 1)
         
@@ -164,7 +170,7 @@ class clipping(ttk.Frame):
         self.showimage1 = ttk.Button(self.panel, text='Show Clipped Image', command = self.show_clipped_image)
         self.showimage1.grid(row=13, column=0, sticky = 'nsew', pady = 10,padx = 10)
     
-    def mosaicfile(self, event=None):
+    def mosaicfile(self, event=None):                       # Event Handler to choose mosaic file
         self.msfile = filedialog.askopenfilename()
         if(self.msfile!=() and self.msfile!=''):
             ind= self.msfile.rfind('/')
@@ -172,7 +178,7 @@ class clipping(ttk.Frame):
             #self.window.grid(row=1, column=0, columnspan=4, sticky='nsew')
         else: self.msfile=''
     
-    def ClipImage(self):
+    def ClipImage(self):                        # Main clipping function
         if self.display.winfo_exists():
             self.display.grid_forget()
             self.display.destroy()

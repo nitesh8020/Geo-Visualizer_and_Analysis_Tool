@@ -67,7 +67,7 @@ class segmentation(ttk.Frame):
         self.panel = ttk.Frame(self)
         self.panel.grid(row=1, column=0, sticky='nsew')
 
-        self.down = ttk.Frame(self)
+        self.down = ttk.Frame(self) 
         self.down.grid(row = 2, column = 0, sticky = 'sw', columnspan = 4)
         
         self.txt = ttk.Label(self.panel, text="K-Means Segmentation", font="Arial 15 bold")
