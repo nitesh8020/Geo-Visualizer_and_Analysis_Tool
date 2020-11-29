@@ -14,7 +14,7 @@ pip3 install earthpy
 ```
 Install gdal:
 ```
-pip install GDAL
+pip3 install GDAL
 ```
 Install cartopy:
 ```bash
