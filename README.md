@@ -12,7 +12,10 @@ Install earthpy:
 ```bash
 pip3 install earthpy
 ```
-
+Install gdal:
+```
+pip install GDAL
+```
 Install cartopy:
 ```bash
 pip3 install cartopy
