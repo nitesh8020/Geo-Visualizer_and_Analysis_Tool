@@ -81,7 +81,7 @@ class clipping(ttk.Frame):
         self.ax = self.fig.add_subplot(111)
         self.canvas_preview = FigureCanvas(self.fig, frame)
         
-        fp = self.outname.get()+'.tif'
+        fp = 'OutputImages/'+self.outname.get()+'.tif'
         self.dataset = gdal.Open(fp)
         self.band = self.dataset.GetRasterBand(1)
         self.geotransform = self.dataset.GetGeoTransform()
@@ -116,7 +116,7 @@ class clipping(ttk.Frame):
         self.panel.grid(row=1, column=0, sticky='nsew')
         
         #mosaicfile selection button
-        self.msbtn = ttk.Button(self.panel, text='select Mosaicfile', command=self.mosaicfile)
+        self.msbtn = ttk.Button(self.panel, text='Select Mosaicfile', command=self.mosaicfile)
         self.msbtn.grid(row=0, column=0, sticky='nsew', padx=10, pady=10)
         #show image
         self.showimage = ttk.Button(self.panel, text='Show Image', command = self.show_image)
@@ -150,7 +150,7 @@ class clipping(ttk.Frame):
         self.InputYmax.grid(row=9, column=0, sticky = 'nsew', padx = 10, pady = 10)
         
         #name of clipped image
-        self.InputLabel5 = ttk.Label(self.panel, text = "enter image name")
+        self.InputLabel5 = ttk.Label(self.panel, text = "Output Image Name")
         self.InputLabel5.grid(row=10, column=0, sticky = 'nsew', padx = 10, pady = 10)
 
         self.outname= ttk.Entry(self.panel)
@@ -158,7 +158,7 @@ class clipping(ttk.Frame):
         
         #clipping button
         #self.cpbtn = ttk.Button(self.panel, text='clip mosaic', command=(lambda e=ents: self.ClipImage(e)))
-        self.cpbtn = ttk.Button(self.panel, text='clip mosaic', command=self.ClipImage)
+        self.cpbtn = ttk.Button(self.panel, text='Clip Mosaic', command=self.ClipImage)
         self.cpbtn.grid(row=12, column=0, sticky='nsew', padx=10, pady=10)
     
         self.showimage1 = ttk.Button(self.panel, text='Show Clipped Image', command = self.show_clipped_image)
@@ -185,7 +185,7 @@ class clipping(ttk.Frame):
         x_max = float(self.InputXmax.get())
         y_max = float(self.InputYmax.get())
         #out_path = 'OutputImages/'+self.entry.get()+'.tif'
-        cfile = self.outname.get()+'.tif'
+        cfile = 'OutputImages/'+self.outname.get()+'.tif'
         with rasterio.open(self.msfile) as src:
         #window = Window(padding, padding, src.width - 2 * padding, src.height - 2 * padding)
             window = Window(x_min, y_min, x_max, y_max)
