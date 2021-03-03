@@ -1,3 +1,9 @@
+'''ImageViewer.py to take the input files and display the image
+The program takes three files: Red, Blue and Green and merges them
+Main libraries used are tkinter, glob, rasterio, earthpy, geopandas and matplotlib'''
+
+
+
 import tkinter as tk
 from tkinter import ttk
 from glob import glob
@@ -15,6 +21,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolb
 import os
 from datetime import datetime
 
+# create class
 class ViewImage(ttk.Frame):
     def __init__(self,master):
         super().__init__(master)
@@ -25,11 +32,12 @@ class ViewImage(ttk.Frame):
         self.createWidgets()
 
 
-    def showImage(self):
-        directory = os.getcwd()
-        now = datetime.now()
-        dt_string = now.strftime("%d_%m_%Y_%H:%M:%S")
-        outdir = directory + '/img_STACK' + dt_string + '.tiff'
+    def showImage(self):                    # Function to display the image in frame
+        # directory = os.getcwd()
+        # now = datetime.now()
+        # dt_string = now.strftime("%d_%m_%Y_%H:%M:%S")
+        # outdir = directory + '/img_STACK' + dt_string + '.tiff'
+        outdir = 'OutputImages/'+self.out_name.get() + '.tiff'
         frame=self.frame
         self.band_fnames = [self.file1,self.file2,self.file3]
         arr_st, meta = es.stack(self.band_fnames, out_path = outdir, nodata = 0)
@@ -41,7 +49,7 @@ class ViewImage(ttk.Frame):
         self.toolbar.update()
         self.canvas.get_tk_widget().pack()
 
-    def createWidgets(self):
+    def createWidgets(self):                # Creating widgets for frame
         self.grid_columnconfigure(0,weight = 0)
         self.grid_columnconfigure(1,weight = 1)
         
@@ -63,6 +71,12 @@ class ViewImage(ttk.Frame):
 
         self.choose_button3 = ttk.Button(self.chooseButtons, text="Blue File", command = self.ChooseFileAction3)
         self.choose_button3.grid(row=1, column=2, padx=5, pady=5)
+
+        self.file_name_entry_Label = ttk.Label(self.chooseButtons, text="Output File Name")
+        self.file_name_entry_Label.grid(row=2,column=0,padx=5,pady=5)
+
+        self.out_name = ttk.Entry(self.chooseButtons)
+        self.out_name.grid(row = 2, column = 1, padx = 5, pady = 5)
         
         
         

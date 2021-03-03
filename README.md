@@ -12,8 +12,27 @@ Install earthpy:
 ```bash
 pip3 install earthpy
 ```
+Install gdal:
+```
+pip3 install GDAL
+```
+Install cartopy:
+```bash
+pip3 install cartopy
+```
 
 Run using:
 ```bash
 python3 interface.py
 ```
+Add GeoVisualizerAndAnalysisTool icon to launcher:
+```bash
+python3 add.py
+```
+Remove GeoVisualizerAndAnalysisTool icon from launcher:
+```bash
+python3 remove.py
+```
+
+
+To change theme, edit settings.txt and replace the theme name. Available themes can be found in themes.txt
